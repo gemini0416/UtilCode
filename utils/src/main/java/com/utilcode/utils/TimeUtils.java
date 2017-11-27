@@ -1159,7 +1159,7 @@ public class TimeUtils {
      * @param step 步长
      * @return
      */
-    private String getPastTime(int year, int month, int day, int step){
+    public static String getPastTime(int year, int month, int day, int step){
         String time = null;
         if (day - step >= 0){
             time = year+"-"+month+"-"+(day-step+1);
