@@ -3,6 +3,7 @@ package com.utilcode.utils;
 import android.annotation.SuppressLint;
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -1152,45 +1153,17 @@ public class TimeUtils {
     }
 
     /**
-     * 获取指定时间前多少天为哪一天
-     * @param year 指定年
-     * @param month 指定月
-     * @param day 指定日
-     * @param step 步长
+     * 获取指定时间多少天为哪一天
+     * @param time yyyy/mm/dd
+     * @param step 步长(+后多少天，-前多少天)
      * @return
      */
-    public static String getPastTime(int year, int month, int day, int step){
-        String time = null;
-        if (day - step >= 0){
-            time = year+"-"+month+"-"+(day-step+1);
-        }else if (month > 1){
-            switch (month-1){
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 8:
-                case 10:
-                case 12:
-                    time = getPastTime(year,month-1,31,step-day);
-                    break;
-                case 2:
-                    if (isLeapYear(year)){
-                        time = getPastTime(year,month-1,28,step-day);
-                    }else {
-                        time = getPastTime(year,month-1,29,step-day);
-                    }
-                    break;
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    time = getPastTime(year,month-1,30,step-day);
-                    break;
-            }
-        }else if (year > 1){
-            time = getPastTime(year-1,12,31,step-day);
-        }
-        return time;
+    public static String getPastTime(String time, int step){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA);
+        Date date = dateFormat.parse(time, new ParsePosition(0));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.DATE, step);
+        return dateFormat.format(calendar.getTime());
     }
 }
